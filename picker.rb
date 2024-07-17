@@ -9,19 +9,15 @@ def stock_picker(prices)
 # Step 3: 
   # Loop through array
   best_prices_hash = Hash.new(0)
-
-  sell_array = Array.new(prices)
-  buy_array = Array.new(prices)
-
-  for buy_price in buy_array
-    for sell_price in sell_array
+  prices.each_with_index do |buy_price, index_1|
+    prices.each_with_index do |sell_price, index_2|
       profit = sell_price - buy_price
-      best_prices_hash[[prices.index(buy_price), prices.index(sell_price)]] = profit
+      index_2 > index_1 ? best_prices_hash[[index_1, index_2]] = profit : nil
     end
   end
-  valid_results = best_prices_hash.select {|index, value| index[1] > index[0]}
-  x = valid_results.select {|index, value| value == valid_results.values.max}
-  return x.keys[0]
+  most_profit_key_value_pair = best_prices_hash.select {|index, value| value == best_prices_hash.values.max}
+  return most_profit_key_value_pair.keys[0]
+end
   
 # Step 4:
   # While in loop
@@ -48,6 +44,5 @@ def stock_picker(prices)
   # Return buy_price, sell_price in new array
   # return [buy_price, sell_price]
 
-end
 
 p stock_picker([17,3,6,9,15,8,6,1,10])
